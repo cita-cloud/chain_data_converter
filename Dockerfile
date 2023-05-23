@@ -14,16 +14,15 @@ RUN cargo build --release
 # Step 2: Runtime stage
 # Start from a new image to create a smaller final image
 FROM debian:buster-slim
+FROM registry.devops.rivtower.com/cita-cloud/storage_rocksdb:latest as storage_rocksdb
+FROM registry.devops.rivtower.com/cita-cloud/storage_opendal:latest as storage_opendal
 
 # Set the current working directory
 WORKDIR /usr/src/myapp
 
 # Copy the binary from the build stage to the runtime stage
-COPY --from=build /usr/src/myapp/target/release/myapp .
-
-# Expose the port your app runs on
-# EXPOSE 8080
-
-# Run the binary
-ENTRYPOINT ["./myapp"]
-CMD ["arg1", "arg2"]
+COPY --from=build /usr/src/myapp/target/release/converter .
+COPY --from=build /usr/src/myapp/config_opendal.toml .
+COPY --from=build /usr/src/myapp/config_rocksdb.toml .
+COPY --from=storage_rocksdb /usr/bin/storage ./storage_rocksdb
+COPY --from=storage_opendal /usr/bin/storage ./storage_opendal
