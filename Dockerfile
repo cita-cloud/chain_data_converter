@@ -13,9 +13,9 @@ RUN cargo build --release
 
 # Step 2: Runtime stage
 # Start from a new image to create a smaller final image
-FROM debian:buster-slim
 FROM registry.devops.rivtower.com/cita-cloud/storage_rocksdb:latest as storage_rocksdb
 FROM registry.devops.rivtower.com/cita-cloud/storage_opendal:latest as storage_opendal
+FROM debian:buster-slim
 
 # Set the current working directory
 WORKDIR /usr/src/myapp
