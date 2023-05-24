@@ -1,6 +1,6 @@
 # Step 1: Build stage
 # Use the official Rust image as a base
-FROM rust:latest AS build
+FROM rust:slim-bullseye AS build
 
 # Set the current working directory inside the Docker image
 WORKDIR /usr/src/myapp
