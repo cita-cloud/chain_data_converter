@@ -5,6 +5,12 @@ FROM rust:latest AS build
 # Set the current working directory inside the Docker image
 WORKDIR /usr/src/myapp
 
+# Add deps
+RUN rustup component add rustfmt && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends librocksdb-dev libsnappy-dev liblz4-dev libzstd-dev && \
+    apt-get clean
+
 # Copy the source code into the Docker image
 COPY . .
 
