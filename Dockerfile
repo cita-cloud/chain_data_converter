@@ -8,7 +8,7 @@ WORKDIR /usr/src/myapp
 # Add deps
 RUN rustup component add rustfmt && \
     apt-get update && \
-    apt-get install -y --no-install-recommends librocksdb-dev libsnappy-dev liblz4-dev libzstd-dev && \
+    apt-get install -y --no-install-recommends librocksdb-dev libsnappy-dev liblz4-dev libzstd-dev clang && \
     apt-get clean
 
 # Copy the source code into the Docker image
@@ -21,7 +21,7 @@ RUN cargo build --release
 # Start from a new image to create a smaller final image
 FROM registry.devops.rivtower.com/cita-cloud/storage_rocksdb:latest as storage_rocksdb
 FROM registry.devops.rivtower.com/cita-cloud/storage_opendal:latest as storage_opendal
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 # Set the current working directory
 WORKDIR /usr/src/myapp
