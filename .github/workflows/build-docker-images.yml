@@ -30,7 +30,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_REGISTRY_ADDRESS }}/cita-cloud/converter:lastest
+          tags: ${{ secrets.DOCKER_REGISTRY_ADDRESS }}/cita-cloud/converter:latest
 
 # jobs:
 #   build:
