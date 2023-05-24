@@ -2,3 +2,4 @@
 storage_port = 60003
 domain = "test-chain-node1"
 enable_metrics = false
+db_path = "chain_data"
