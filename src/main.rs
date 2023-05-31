@@ -15,16 +15,22 @@ async fn convert(
     height: u64,
 ) {
     let height_bytes = height.to_be_bytes().to_vec();
-    let extkey = ExtKey {
+    let block_extkey = ExtKey {
         region: 11,
         key: height_bytes.clone(),
     };
-    let block = old.load(extkey).await.unwrap().value;
+    let block = old.load(block_extkey).await.unwrap().value;
+    let hash_extkey = ExtKey {
+        region: 4,
+        key: height_bytes.clone(),
+    };
+    let mut bytes = old.load(hash_extkey).await.unwrap().value;
+    bytes.extend_from_slice(block.as_slice());
 
     let content = Content {
         region: 12,
         key: height_bytes.clone(),
-        value: block,
+        value: bytes,
     };
     let status = new.store(content).await.unwrap();
 
