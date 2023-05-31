@@ -43,8 +43,8 @@ async fn convert(
 async fn main() {
     // cargo run old_port new_port
     let args: Vec<String> = env::args().collect();
-    if args.len() != 3 {
-        panic!("args error: cargo run old_port new_port");
+    if args.len() != 3 && args.len() != 5 {
+        panic!("args error: cargo run old_port new_port [start] [end]");
     }
     let old_port = &args[1];
     let new_port = &args[2];
@@ -72,11 +72,23 @@ async fn main() {
             "new storage should not stored data, check: old_port: {old_port}, new_port: {new_port}"
         )
     }
+
     let current_height = u64_decode(&old_client.load(key).await.unwrap().value);
+    let start = args.get(3).map(|s| s.parse::<u64>().unwrap()).unwrap_or(0);
+    let end = args
+        .get(4)
+        .map(|s| s.parse::<u64>().unwrap())
+        .unwrap_or(current_height);
+    if start > end || end > current_height {
+        panic!(
+            "current_height: {}, start: {}, end: {}",
+            current_height, start, end
+        )
+    }
 
     println!("old storage height: {current_height}");
 
-    for height in 0..=current_height {
+    for height in start..=end {
         convert(&old_client, &new_client, height).await;
         println!("converted: {} / {}", height, current_height);
     }

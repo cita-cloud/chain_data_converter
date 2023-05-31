@@ -1,0 +1,11 @@
+[storage_opendal]
+storage_port = 60003
+domain = "test-chain-node1"
+enable_metrics = false
+db_path = "chain_data"
+
+[storage_opendal.cloud_storage]
+access_key_id = ""
+secret_access_key = ""
+endpoint = ""
+bucket = ""
