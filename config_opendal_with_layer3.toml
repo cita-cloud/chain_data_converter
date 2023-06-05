@@ -5,7 +5,9 @@ enable_metrics = false
 db_path = "chain_data"
 
 [storage_opendal.cloud_storage]
+service_type = ""
 access_key_id = ""
 secret_access_key = ""
 endpoint = ""
 bucket = ""
+root = ""
