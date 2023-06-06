@@ -22,6 +22,12 @@ RUN cargo build --release
 FROM registry.devops.rivtower.com/cita-cloud/storage_rocksdb:latest as storage_rocksdb
 FROM registry.devops.rivtower.com/cita-cloud/storage_opendal:latest as storage_opendal
 FROM debian:bullseye-slim
+# get the latest CA certs
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && update-ca-certificates \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set the current working directory
 WORKDIR /usr/src/myapp
